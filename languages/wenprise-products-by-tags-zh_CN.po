@@ -1,0 +1,140 @@
+# Copyright (C) 2024 WordPress Contributors
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Wenprise Products By Tags 0.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wenprise-products-"
+"by-tags\n"
+"POT-Creation-Date: 2024-03-27 12:00+0800\n"
+"PO-Revision-Date: 2024-12-27 14:39+0800\n"
+"Last-Translator: Amos Lee <iwillhappy1314@gmail.com>\n"
+"Language-Team: \n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.5\n"
+
+#: build/index.js:1
+msgid "Product Collection"
+msgstr "产品集合"
+
+#: build/index.js:1
+msgid "Product Tags"
+msgstr "产品标签"
+
+#: build/index.js:1
+msgid "Product Categories"
+msgstr "产品分类"
+
+#: build/index.js:1
+msgid "Product Collections"
+msgstr "产品集合"
+
+#: build/index.js:1
+msgid "Tag"
+msgstr "标签"
+
+#: build/index.js:1
+msgid "Category"
+msgstr "分类"
+
+#: build/index.js:1
+msgid "Collection"
+msgstr "集合"
+
+#: build/index.js:1
+msgid "Block Settings"
+msgstr "查看子区块设置区块设置"
+
+#: build/index.js:1
+msgid "Select Taxonomy"
+msgstr "选择分类方法"
+
+#: build/index.js:1
+msgid "Select"
+msgstr "选择"
+
+#: build/index.js:1
+msgid "Please select"
+msgstr "请选择"
+
+#: build/index.js:1
+msgid "Layout Settings"
+msgstr "布局设置"
+
+#: build/index.js:1
+msgid "Desktop"
+msgstr "桌面端"
+
+#: build/index.js:1
+msgid "Columns"
+msgstr "列数"
+
+#: build/index.js:1
+msgid "Column Gap"
+msgstr "列间距"
+
+#: build/index.js:1
+msgid "Row Gap"
+msgstr "行间距"
+
+#: build/index.js:1
+msgid "Tablet"
+msgstr "平板端"
+
+#: build/index.js:1
+msgid "Mobile"
+msgstr "移动端 1手机端"
+
+#: build/index.js:1
+msgid "Rows"
+msgstr "行数"
+
+#: build/index.js:1
+msgid "Loading..."
+msgstr "正在加载..."
+
+#: build/index.js:1
+msgid "Please select a term in the sidebar settings"
+msgstr "请在右侧设置中选择一个项目"
+
+#: plugin.php:1
+msgid "Please select a term in the block settings"
+msgstr "请在右侧设置中选择一个项目"
+
+#: plugin.php:1
+msgid "Term"
+msgstr "项目"
+
+#: plugin.php:1
+msgid "No products found in this %s"
+msgstr "没有找到产品"
+
+#: plugin.php:1
+msgid "Search Collections"
+msgstr "搜索集合"
+
+#: plugin.php:1
+msgid "All Collections"
+msgstr "添加集合"
+
+#: plugin.php:1
+msgid "Parent Collection"
+msgstr "父级集合"
+
+#: plugin.php:1
+msgid "Parent Collection:"
+msgstr "父级集合"
+
+#: plugin.php:1
+msgid "Edit Collection"
+msgstr "编辑集合"
+
+#: plugin.php:1
+msgid "Update Collection"
+msgstr "更新集合"
+
+#: plugin.php:1
+msgid "Add New Collection"
+msgstr "添加新集合"
