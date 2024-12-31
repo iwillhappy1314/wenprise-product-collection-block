@@ -1,1 +1,1 @@
-console.log("Hello World! (from create-block-wenprise-products-by-tags block)");
+console.log("Hello World! (from create-block-wenprise-product-collection block)");

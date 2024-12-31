@@ -33,8 +33,8 @@ export default function Edit() {
 	return (
 		<p { ...useBlockProps() }>
 			{ __(
-				'Wenprise Products By Tags – hello from the editor!',
-				'wenprise-products-by-tags'
+				'Wenprise Product Collection – hello from the editor!',
+				'wenprise-product-collection'
 			) }
 		</p>
 	);

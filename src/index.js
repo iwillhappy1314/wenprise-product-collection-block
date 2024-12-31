@@ -6,10 +6,10 @@ const { apiFetch } = wp;
 const { __ } = wp.i18n; // 引入翻译函数
 const ServerSideRender = wp.serverSideRender;
 
-registerBlockType('wenprise/products-by-tags', {
-	title: __('Product Collection', 'wenprise-products-by-tags'),
+registerBlockType('wenprise/product-collection', {
+	title: __('Product Collection', 'wenprise-product-collection'),
 	icon: 'grid-view',
-	category: 'woocommerce',
+	category: 'wenprise-blocks',
 	attributes: {
 		taxonomyType: {
 			type: 'string',
@@ -68,16 +68,16 @@ registerBlockType('wenprise/products-by-tags', {
 
 		// 可用的分类方式
 		const taxonomyOptions = [
-			{ label: __('Product Tags', 'wenprise-products-by-tags'), value: 'product_tag' },
-			{ label: __('Product Categories', 'wenprise-products-by-tags'), value: 'product_cat' },
-			{ label: __('Product Collections', 'wenprise-products-by-tags'), value: 'product_collection' },
+			{ label: __('Product Tags', 'wenprise-product-collection'), value: 'product_tag' },
+			{ label: __('Product Categories', 'wenprise-product-collection'), value: 'product_cat' },
+			{ label: __('Product Collections', 'wenprise-product-collection'), value: 'product_collection' },
 		];
 
 		// 分类方式的显示名称映射
 		const taxonomyLabels = {
-			'product_tag': __('Tag', 'wenprise-products-by-tags'),
-			'product_cat': __('Category', 'wenprise-products-by-tags'),
-			'product_collection': __('Collection', 'wenprise-products-by-tags')
+			'product_tag': __('Tag', 'wenprise-product-collection'),
+			'product_cat': __('Category', 'wenprise-product-collection'),
+			'product_collection': __('Collection', 'wenprise-product-collection')
 		};
 
 		useEffect(() => {
@@ -108,9 +108,9 @@ registerBlockType('wenprise/products-by-tags', {
 		return (
 			<>
 				<InspectorControls>
-					<PanelBody title={__('Block Settings', 'wenprise-products-by-tags')}>
+					<PanelBody title={__('Block Settings', 'wenprise-product-collection')}>
 						<SelectControl
-							label={__('Select Taxonomy', 'wenprise-products-by-tags')}
+							label={__('Select Taxonomy', 'wenprise-product-collection')}
 							value={attributes.taxonomyType}
 							options={taxonomyOptions}
 							onChange={(taxonomyType) => {
@@ -121,80 +121,80 @@ registerBlockType('wenprise/products-by-tags', {
 							}}
 						/>
 						<SelectControl
-							label={__('Select', 'wenprise-products-by-tags') + ' ' + taxonomyLabels[attributes.taxonomyType]}
+							label={__('Select', 'wenprise-product-collection') + ' ' + taxonomyLabels[attributes.taxonomyType]}
 							value={attributes.tagId}
 							options={[
-								{ label: __('Please select', 'wenprise-products-by-tags'), value: '' },
+								{ label: __('Please select', 'wenprise-product-collection'), value: '' },
 								...taxonomyTerms,
 							]}
 							onChange={(tagId) => setAttributes({ tagId })}
 						/>
 					</PanelBody>
 
-					<PanelBody title={__('Layout Settings', 'wenprise-products-by-tags')} initialOpen={true}>
-						<h3 className="components-base-control">{__('Desktop', 'wenprise-products-by-tags')} (≥1024px)</h3>
+					<PanelBody title={__('Layout Settings', 'wenprise-product-collection')} initialOpen={true}>
+						<h3 className="components-base-control">{__('Desktop', 'wenprise-product-collection')} (≥1024px)</h3>
 						<RangeControl
-							label={__('Columns', 'wenprise-products-by-tags')}
+							label={__('Columns', 'wenprise-product-collection')}
 							value={attributes.columns}
 							onChange={(columns) => setAttributes({ columns })}
 							min={1}
 							max={6}
 						/>
 						<RangeControl
-							label={__('Column Gap', 'wenprise-products-by-tags') + ' (px)'}
+							label={__('Column Gap', 'wenprise-product-collection') + ' (px)'}
 							value={attributes.columnGap}
 							onChange={(columnGap) => setAttributes({ columnGap })}
 							min={0}
 							max={100}
 						/>
 						<RangeControl
-							label={__('Row Gap', 'wenprise-products-by-tags') + ' (px)'}
+							label={__('Row Gap', 'wenprise-product-collection') + ' (px)'}
 							value={attributes.rowGap}
 							onChange={(rowGap) => setAttributes({ rowGap })}
 							min={0}
 							max={100}
 						/>
 
-						<h3 className="components-base-control">{__('Tablet', 'wenprise-products-by-tags')} (≥768px)</h3>
+						<h3 className="components-base-control">{__('Tablet', 'wenprise-product-collection')} (≥768px)</h3>
 						<RangeControl
-							label={__('Columns', 'wenprise-products-by-tags')}
+							label={__('Columns', 'wenprise-product-collection')}
 							value={attributes.tabletColumns}
 							onChange={(tabletColumns) => setAttributes({ tabletColumns })}
 							min={1}
 							max={4}
 						/>
 						<RangeControl
-							label={__('Column Gap', 'wenprise-products-by-tags') + ' (px)'}
+							label={__('Column Gap', 'wenprise-product-collection') + ' (px)'}
 							value={attributes.tabletColumnGap}
 							onChange={(tabletColumnGap) => setAttributes({ tabletColumnGap })}
 							min={0}
 							max={80}
 						/>
 						<RangeControl
-							label={__('Row Gap', 'wenprise-products-by-tags') + ' (px)'}
+							label={__('Row Gap', 'wenprise-product-collection') + ' (px)'}
 							value={attributes.tabletRowGap}
 							onChange={(tabletRowGap) => setAttributes({ tabletRowGap })}
 							min={0}
 							max={80}
 						/>
 
-						<h3 className="components-base-control">{__('Mobile', 'wenprise-products-by-tags')} (&lt;768px)</h3>
+						<h3 className="components-base-control">{__('Mobile', 'wenprise-product-collection')} (&lt;768px)</h3>
 						<RangeControl
-							label={__('Columns', 'wenprise-products-by-tags')}
+							label={__('Columns', 'wenprise-product-collection')}
 							value={attributes.mobileColumns}
 							onChange={(mobileColumns) => setAttributes({ mobileColumns })}
 							min={1}
 							max={2}
 						/>
 						<RangeControl
-							label={__('Column Gap', 'wenprise-products-by-tags') + ' (px)'}
+							label={__('Column Gap', 'wenprise-product-collection') + ' (px)'}
 							value={attributes.mobileColumnGap}
 							onChange={(mobileColumnGap) => setAttributes({ mobileColumnGap })}
 							min={0}
 							max={50}
 						/>
 						<RangeControl
-							label={__('Row Gap', 'wenprise-products-by-tags') + ' (px)'}
+							label={__('Row Gap', 'wenprise-product-collection') + ' (px)'}
 							value={attributes.mobileRowGap}
 							onChange={(mobileRowGap) => setAttributes({ mobileRowGap })}
 							min={0}
@@ -202,7 +202,7 @@ registerBlockType('wenprise/products-by-tags', {
 						/>
 
 						<RangeControl
-							label={__('Number of Products', 'wenprise-products-by-tags')}
+							label={__('Number of Products', 'wenprise-product-collection')}
 							value={attributes.productsCount}
 							onChange={(productsCount) => setAttributes({ productsCount })}
 							min={1}
@@ -210,14 +210,14 @@ registerBlockType('wenprise/products-by-tags', {
 						/>
 					</PanelBody>
 				</InspectorControls>
-				<div className="wc-block-products-by-tag">
+				<div className="wc-block-product-collection">
 					{loading ? (
-						<p>{__('Loading...', 'wenprise-products-by-tags')}</p>
+						<p>{__('Loading...', 'wenprise-product-collection')}</p>
 					) : !attributes.tagId ? (
-						<p>{__('Please select a term in the sidebar settings', 'wenprise-products-by-tags')}</p>
+						<p>{__('Please select a term in the sidebar settings', 'wenprise-product-collection')}</p>
 					) : (
 						<ServerSideRender
-							block="wenprise/products-by-tags"
+							block="wenprise/product-collection"
 							attributes={attributes}
 						/>
 					)}

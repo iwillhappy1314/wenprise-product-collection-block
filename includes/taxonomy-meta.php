@@ -176,9 +176,9 @@ function wprs_add_header_bg_scripts() {
 				}
 
 				frame = wp.media({
-					title: '<?php _e("Select or Upload Header Background Image", "wenprise-products-by-tags"); ?>',
+					title: '<?php _e("Select or Upload Header Background Image", "wenprise-product-collection"); ?>',
 					button: {
-						text: '<?php _e("Use this image", "wenprise-products-by-tags"); ?>'
+						text: '<?php _e("Use this image", "wenprise-product-collection"); ?>'
 					},
 					multiple: false
 				});

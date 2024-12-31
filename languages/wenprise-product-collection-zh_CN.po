@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Wenprise Products By Tags 0.1.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wenprise-products-"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wenprise-product-collection"
 "by-tags\n"
 "POT-Creation-Date: 2024-03-27 12:00+0800\n"
 "PO-Revision-Date: 2024-12-27 14:39+0800\n"

@@ -1,14 +1,14 @@
 <?php
 /**
- * Plugin Name:       Wenprise Products By Tags
- * Description:       Example block scaffolded with Create Block tool.
+ * Plugin Name:       Wenprise Product Collection
+ * Description:       Add product collection taxonomy for WooCommerce, and display products by collection
  * Requires at least: 6.1
  * Requires PHP:      7.0
  * Version:           0.1.0
  * Author:           The WordPress Contributors
  * License:          GPL-2.0-or-later
  * License URI:      https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:      wenprise-products-by-tags
+ * Text Domain:      wenprise-product-collection
  *
  * @package CreateBlock
  */
@@ -18,13 +18,27 @@
  require_once(WENPRISE_PRODUCT_COLLECTION_PATH . 'includes/taxonomy.php');
  require_once(WENPRISE_PRODUCT_COLLECTION_PATH . 'includes/taxonomy-meta.php');
 
+ add_filter('block_categories_all', function ($categories)
+{
+	return array_merge(
+		[
+			[
+				'slug'  => 'wenprise-blocks',
+				'title' => __('Wenprise Blocks', 'flashfox'),
+			],
+		],
+		$categories
+	);
+}, 10, 1);
+
+
 function wprs_register_products_by_tag_block() {
 	// 加载翻译文件
-	load_plugin_textdomain('wenprise-products-by-tags', false, dirname(plugin_basename(__FILE__)) . '/languages');
+	load_plugin_textdomain('wenprise-product-collection', false, dirname(plugin_basename(__FILE__)) . '/languages');
 
 	// 注册区块脚本
 	wp_register_script(
-		'wenprise-products-by-tags',
+		'wenprise-product-collection',
 		plugins_url('build/index.js', __FILE__),
 		array('wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'wp-server-side-render', 'wp-i18n')
 	);
@@ -32,14 +46,14 @@ function wprs_register_products_by_tag_block() {
 	// 为 JavaScript 添加翻译支持
 	if (function_exists('wp_set_script_translations')) {
 		wp_set_script_translations(
-			'wenprise-products-by-tags',
-			'wenprise-products-by-tags',
+			'wenprise-product-collection',
+			'wenprise-product-collection',
 			plugin_dir_path(__FILE__) . 'languages'
 		);
 	}
 
-	register_block_type('wenprise/products-by-tags', array(
-		'editor_script' => 'wenprise-products-by-tags',
+	register_block_type('wenprise/products-collection', array(
+		'editor_script' => 'wenprise-product-collection',
 		'attributes' => array(
 			'taxonomyType' => array(
 				'type' => 'string',
@@ -112,16 +126,16 @@ function wprs_render_products_by_tag_block($attributes) {
 
 	// 如果没有选择分类项，返回提示信息
 	if (empty($term_id)) {
-		return '<p>' . esc_html__('Please select a term in the block settings', 'wenprise-products-by-tags') . '</p>';
+		return '<p>' . esc_html__('Please select a term in the block settings', 'wenprise-product-collection') . '</p>';
 	}
 
 	// 获取分类名称显示
 	$taxonomy_labels = array(
-		'product_tag' => esc_html__('Tag', 'wenprise-products-by-tags'),
-		'product_cat' => esc_html__('Category', 'wenprise-products-by-tags'),
-		'product_collection' => esc_html__('Collection', 'wenprise-products-by-tags')
+		'product_tag' => esc_html__('Tag', 'wenprise-product-collection'),
+		'product_cat' => esc_html__('Category', 'wenprise-product-collection'),
+		'product_collection' => esc_html__('Collection', 'wenprise-product-collection')
 	);
-	$taxonomy_label = $taxonomy_labels[$taxonomy_type] ?? esc_html__('Term', 'wenprise-products-by-tags');
+	$taxonomy_label = $taxonomy_labels[$taxonomy_type] ?? esc_html__('Term', 'wenprise-product-collection');
 
 	// 设置查询参数
 	$args = array(
@@ -225,7 +239,7 @@ function wprs_render_products_by_tag_block($attributes) {
 			'<p>%s</p>',
 			sprintf(
 			/* translators: %s: taxonomy label */
-				esc_html__('No products found in this %s', 'wenprise-products-by-tags'),
+				esc_html__('No products found in this %s', 'wenprise-product-collection'),
 				esc_html($taxonomy_label)
 			)
 		);

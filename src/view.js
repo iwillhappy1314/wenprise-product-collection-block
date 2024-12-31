@@ -22,6 +22,6 @@
 
 /* eslint-disable no-console */
 console.log(
-	'Hello World! (from create-block-wenprise-products-by-tags block)'
+	'Hello World! (from wenprise-product-collection block)'
 );
 /* eslint-enable no-console */
