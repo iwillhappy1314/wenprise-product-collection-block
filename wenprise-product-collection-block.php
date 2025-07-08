@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       Wenprise Product Collection
+ * Plugin Name:       Wenprise Product Collection Block
  * Description:       Add product collection taxonomy for WooCommerce, and display products by collection
  * Requires at least: 6.1
  * Requires PHP:      7.0
