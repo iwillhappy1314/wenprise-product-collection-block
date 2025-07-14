@@ -236,7 +236,7 @@ function wprs_render_products_by_terms($attributes) {
 						text-align: left;
 					}
 					.%1$s .wc-block-grid__product-image {
-						max-width: 30%;
+						max-width: 30%%;
 						margin-right: 1rem;
 						flex: 0 0 auto;
 					}
