@@ -1,10 +1,14 @@
 const { registerBlockType } = wp.blocks;
 const { InspectorControls } = wp.blockEditor;
-const { PanelBody, SelectControl, RangeControl } = wp.components;
+const { PanelBody, SelectControl } = wp.components;
 const { useState, useEffect } = wp.element;
 const { apiFetch } = wp;
 const { __ } = wp.i18n; // 引入翻译函数
 const ServerSideRender = wp.serverSideRender;
+
+// 导入轮播设置组件
+import { CarouselSettings } from './components/carousel-settings';
+import { LayoutSettings } from './components/layout-settings';
 
 registerBlockType('wenprise/product-collection', {
 	title: __('Product Collection', 'wenprise-product-collection'),
@@ -18,6 +22,10 @@ registerBlockType('wenprise/product-collection', {
 		tagId: {
 			type: 'string',
 			default: '',
+		},
+		displayStyle: {
+			type: 'string',
+			default: 'grid',
 		},
 		columns: {
 			type: 'number',
@@ -58,6 +66,39 @@ registerBlockType('wenprise/product-collection', {
 		productsCount: {
 			type: 'number',
 			default: 12,
+		},
+		// 轮播设置属性
+		perPage: {
+			type: 'number',
+			default: 4,
+		},
+		perPageTablet: {
+			type: 'number',
+			default: 2,
+		},
+		perPageMobile: {
+			type: 'number',
+			default: 1,
+		},
+		gap: {
+			type: 'string',
+			default: '2rem',
+		},
+		gapTablet: {
+			type: 'string',
+			default: '1.5rem',
+		},
+		gapMobile: {
+			type: 'string',
+			default: '1rem',
+		},
+		pagination: {
+			type: 'boolean',
+			default: true,
+		},
+		arrows: {
+			type: 'boolean',
+			default: true,
 		},
 	},
 
@@ -108,7 +149,7 @@ registerBlockType('wenprise/product-collection', {
 		return (
 			<>
 				<InspectorControls>
-					<PanelBody title={__('Block Settings', 'wenprise-product-collection')}>
+					<PanelBody title={__('区块设置', 'wenprise-product-collection')}>
 						<SelectControl
 							label={__('Select Taxonomy', 'wenprise-product-collection')}
 							value={attributes.taxonomyType}
@@ -131,86 +172,28 @@ registerBlockType('wenprise/product-collection', {
 						/>
 					</PanelBody>
 
-					<PanelBody title={__('Layout Settings', 'wenprise-product-collection')} initialOpen={true}>
-						<h3 className="components-base-control">{__('Desktop', 'wenprise-product-collection')} (≥1024px)</h3>
-						<RangeControl
-							label={__('Columns', 'wenprise-product-collection')}
-							value={attributes.columns}
-							onChange={(columns) => setAttributes({ columns })}
-							min={1}
-							max={6}
-						/>
-						<RangeControl
-							label={__('Column Gap', 'wenprise-product-collection') + ' (px)'}
-							value={attributes.columnGap}
-							onChange={(columnGap) => setAttributes({ columnGap })}
-							min={0}
-							max={100}
-						/>
-						<RangeControl
-							label={__('Row Gap', 'wenprise-product-collection') + ' (px)'}
-							value={attributes.rowGap}
-							onChange={(rowGap) => setAttributes({ rowGap })}
-							min={0}
-							max={100}
-						/>
-
-						<h3 className="components-base-control">{__('Tablet', 'wenprise-product-collection')} (≥768px)</h3>
-						<RangeControl
-							label={__('Columns', 'wenprise-product-collection')}
-							value={attributes.tabletColumns}
-							onChange={(tabletColumns) => setAttributes({ tabletColumns })}
-							min={1}
-							max={4}
-						/>
-						<RangeControl
-							label={__('Column Gap', 'wenprise-product-collection') + ' (px)'}
-							value={attributes.tabletColumnGap}
-							onChange={(tabletColumnGap) => setAttributes({ tabletColumnGap })}
-							min={0}
-							max={80}
-						/>
-						<RangeControl
-							label={__('Row Gap', 'wenprise-product-collection') + ' (px)'}
-							value={attributes.tabletRowGap}
-							onChange={(tabletRowGap) => setAttributes({ tabletRowGap })}
-							min={0}
-							max={80}
-						/>
-
-						<h3 className="components-base-control">{__('Mobile', 'wenprise-product-collection')} (&lt;768px)</h3>
-						<RangeControl
-							label={__('Columns', 'wenprise-product-collection')}
-							value={attributes.mobileColumns}
-							onChange={(mobileColumns) => setAttributes({ mobileColumns })}
-							min={1}
-							max={2}
-						/>
-						<RangeControl
-							label={__('Column Gap', 'wenprise-product-collection') + ' (px)'}
-							value={attributes.mobileColumnGap}
-							onChange={(mobileColumnGap) => setAttributes({ mobileColumnGap })}
-							min={0}
-							max={50}
-						/>
-						<RangeControl
-							label={__('Row Gap', 'wenprise-product-collection') + ' (px)'}
-							value={attributes.mobileRowGap}
-							onChange={(mobileRowGap) => setAttributes({ mobileRowGap })}
-							min={0}
-							max={50}
-						/>
-
-						<RangeControl
-							label={__('Number of Products', 'wenprise-product-collection')}
-							value={attributes.productsCount}
-							onChange={(productsCount) => setAttributes({ productsCount })}
-							min={1}
-							max={48}
+					<PanelBody title={__('显示样式', 'wenprise-product-collection')}>
+						<SelectControl
+							label={__('显示样式', 'wenprise-product-collection')}
+							value={attributes.displayStyle}
+							options={[
+								{ value: 'grid', label: __('网格', 'wenprise-product-collection') },
+								{ value: 'list', label: __('列表', 'wenprise-product-collection') },
+								{ value: 'carousel', label: __('轮播', 'wenprise-product-collection') },
+							]}
+							onChange={(displayStyle) => setAttributes({ displayStyle })}
 						/>
 					</PanelBody>
+
+					{attributes.displayStyle === 'carousel' && (
+						<CarouselSettings attributes={attributes} setAttributes={setAttributes} />
+					)}
+
+					{(attributes.displayStyle === 'grid' || attributes.displayStyle === 'list') && (
+						<LayoutSettings attributes={attributes} setAttributes={setAttributes} />
+					)}
 				</InspectorControls>
-				<div className="wc-block-product-collection">
+				<div className={`wc-block-product-collection wc-block-product-collection--${attributes.displayStyle}`}>
 					{loading ? (
 						<p>{__('Loading...', 'wenprise-product-collection')}</p>
 					) : !attributes.tagId ? (
