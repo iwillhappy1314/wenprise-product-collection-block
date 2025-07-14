@@ -7,8 +7,7 @@ const { __ } = wp.i18n; // 引入翻译函数
 const ServerSideRender = wp.serverSideRender;
 
 // 导入轮播设置组件
-import { CarouselSettings } from './components/carousel-settings';
-import { LayoutSettings } from './components/layout-settings';
+import { CarouselSettings, LayoutSettings } from 'wenprise-wp-components';
 
 registerBlockType('wenprise/product-collection', {
 	title: __('Product Collection', 'wenprise-product-collection'),
@@ -102,7 +101,7 @@ registerBlockType('wenprise/product-collection', {
 		},
 	},
 
-	edit: function(props) {
+	edit: function (props) {
 		const { attributes, setAttributes } = props;
 		const [taxonomyTerms, setTaxonomyTerms] = useState([]);
 		const [loading, setLoading] = useState(false);
@@ -209,7 +208,7 @@ registerBlockType('wenprise/product-collection', {
 		);
 	},
 
-	save: function() {
+	save: function () {
 		return null;
 	},
 });
