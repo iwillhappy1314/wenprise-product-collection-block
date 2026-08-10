@@ -15,7 +15,7 @@
 		"start": "wp-scripts start"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "^30.7.0"
+		"@wordpress/scripts": "^34.0.0"
 	},
 	"dependencies": {
 		"wenprise-wp-components": "^0.1.7"
