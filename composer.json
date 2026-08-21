@@ -1,0 +1,26 @@
+{
+	"name": "wenprise/wenprise-product-collection-block",
+	"description": "Add a product collection taxonomy for WooCommerce and display products by collection.",
+	"type": "wordpress-plugin",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"php": ">=7.0",
+		"yahnis-elsts/plugin-update-checker": "^5.7"
+	},
+	"config": {
+		"platform": {
+			"php": "7.0.0"
+		},
+		"preferred-install": {
+			"*": "dist"
+		}
+	},
+	"scripts": {
+		"test": [
+			"@test:updater",
+			"@test:changelog"
+		],
+		"test:updater": "php tests/php/update-checker-contract-test.php",
+		"test:changelog": "php bin/test-render-readme-changelog.php"
+	}
+}

@@ -1,6 +1,6 @@
 {
 	"name": "wenprise-product-collection",
-	"version": "0.1.0",
+	"version": "1.0.1",
 	"description": "Add product collection taxonomy for WooCommerce, and display products by collection.",
 	"author": "The WordPress Contributors",
 	"license": "GPL-2.0-or-later",

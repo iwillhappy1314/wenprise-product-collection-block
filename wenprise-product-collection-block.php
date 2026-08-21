@@ -4,7 +4,7 @@
  * Description:       Add product collection taxonomy for WooCommerce, and display products by collection
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           0.1.0
+ * Version:           1.0.1
  * Author:           文普睿思信息科技
  * License:          GPL-2.0-or-later
  * License URI:      https://www.gnu.org/licenses/gpl-2.0.html
@@ -13,10 +13,40 @@
  * @package CreateBlock
  */
 
- define('WENPRISE_PRODUCT_COLLECTION_PATH', plugin_dir_path(__FILE__));
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
- require_once(WENPRISE_PRODUCT_COLLECTION_PATH . 'includes/taxonomy.php');
- require_once(WENPRISE_PRODUCT_COLLECTION_PATH . 'includes/taxonomy-meta.php');
+define('WENPRISE_PRODUCT_COLLECTION_BLOCK_FILE', __FILE__);
+define('WENPRISE_PRODUCT_COLLECTION_PATH', plugin_dir_path(__FILE__));
+define('WENPRISE_PRODUCT_COLLECTION_BLOCK_SLUG', 'wenprise-product-collection-block');
+define('WENPRISE_PRODUCT_COLLECTION_BLOCK_VERSION', '1.0.1');
+define('WENPRISE_PRODUCT_COLLECTION_BLOCK_UPDATE_API_URL', 'https://api.wpcio.com/api/plugin/info/wenprise-product-collection-block');
+
+require_once WENPRISE_PRODUCT_COLLECTION_PATH . 'vendor/autoload.php';
+
+/**
+ * Registers the private plugin update checker once WordPress plugins are loaded.
+ *
+ * @return void
+ */
+function wprs_product_collection_set_update_checker()
+{
+	static $update_checker = null;
+
+	if (null !== $update_checker) {
+		return;
+	}
+
+	$update_checker = PucFactory::buildUpdateChecker(
+		WENPRISE_PRODUCT_COLLECTION_BLOCK_UPDATE_API_URL,
+		WENPRISE_PRODUCT_COLLECTION_BLOCK_FILE,
+		WENPRISE_PRODUCT_COLLECTION_BLOCK_SLUG
+	);
+}
+
+add_action('plugins_loaded', 'wprs_product_collection_set_update_checker');
+
+require_once WENPRISE_PRODUCT_COLLECTION_PATH . 'includes/taxonomy.php';
+require_once WENPRISE_PRODUCT_COLLECTION_PATH . 'includes/taxonomy-meta.php';
 
  add_filter('block_categories_all', function ($categories)
 {

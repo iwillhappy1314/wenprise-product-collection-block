@@ -1,0 +1,107 @@
+name: Publish plugin release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: Existing v-prefixed release tag
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: plugin-release-${{ github.event_name == 'workflow_dispatch' && inputs.tag_name || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      TAG_NAME: ${{ github.event_name == 'workflow_dispatch' && inputs.tag_name || github.ref_name }}
+      PLUGIN_SLUG: wenprise-product-collection-block
+
+    steps:
+      - name: Checkout release tag
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ env.TAG_NAME }}
+          fetch-depth: 0
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.0'
+          extensions: ctype, dom, fileinfo, gd, iconv, json, mbstring, pdo, simplexml, xml, xmlreader, xmlwriter, zip
+          tools: composer:v2.2
+          coverage: none
+
+      - name: Install production dependencies
+        run: composer install --no-dev --prefer-dist --no-interaction --no-progress --optimize-autoloader
+
+      - name: Build release files
+        run: bash bin/build-release.sh "${TAG_NAME}" "${GITHUB_REPOSITORY}"
+
+      - name: Verify release archive
+        run: |
+          unzip -t ".release/${PLUGIN_SLUG}-${TAG_NAME#v}.zip"
+          php -r '
+          $metadata = json_decode(file_get_contents(".release/" . getenv("PLUGIN_SLUG") . ".json"), true);
+          if (!is_array($metadata) || json_last_error() !== JSON_ERROR_NONE) {
+              throw new RuntimeException("Release metadata is not valid JSON.");
+          }
+          if (($metadata["slug"] ?? "") !== getenv("PLUGIN_SLUG")) {
+              throw new RuntimeException("Release metadata slug does not match the plugin.");
+          }
+          if (($metadata["version"] ?? "") !== substr(getenv("TAG_NAME"), 1)) {
+              throw new RuntimeException("Release metadata version does not match the tag.");
+          }
+          if (trim((string) ($metadata["sections"]["changelog"] ?? "")) === "") {
+              throw new RuntimeException("Release metadata does not contain a changelog.");
+          }
+          if (trim((string) ($metadata["last_updated"] ?? "")) === "") {
+              throw new RuntimeException("Release metadata does not contain a last_updated date.");
+          }
+          if (strlen((string) ($metadata["sha256"] ?? "")) !== 64) {
+              throw new RuntimeException("Release metadata does not contain a valid SHA-256 checksum.");
+          }
+          if (strpos((string) ($metadata["download_url"] ?? ""), "/releases/download/" . getenv("TAG_NAME") . "/") === false) {
+              throw new RuntimeException("Release metadata download URL does not match the tag.");
+          }
+          $release_heading = substr(getenv("TAG_NAME"), 1) . " - " . substr($metadata["last_updated"], 0, 10);
+          if (strpos($metadata["sections"]["changelog"], $release_heading) === false) {
+              throw new RuntimeException("Release changelog does not contain the dated release heading.");
+          }
+          '
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG_NAME }}
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          files: .release/*
+
+      - name: Upload release to update server
+        env:
+          RELEASE_UPLOAD_TOKEN: ${{ secrets.WENPRISE_RELEASE_UPLOAD_TOKEN }}
+        run: |
+          if [[ -z "${RELEASE_UPLOAD_TOKEN}" ]]; then
+              echo "Missing GitHub Actions secret: WENPRISE_RELEASE_UPLOAD_TOKEN" >&2
+              exit 1
+          fi
+
+          version="${TAG_NAME#v}"
+          curl \
+              --fail-with-body \
+              --location \
+              --retry 3 \
+              --retry-all-errors \
+              --header "Authorization: Bearer ${RELEASE_UPLOAD_TOKEN}" \
+              --form "package=@.release/${PLUGIN_SLUG}-${version}.zip;type=application/zip" \
+              --form "metadata=@.release/${PLUGIN_SLUG}.json;type=application/json" \
+              "https://api.wpcio.com/api/plugin/upload/${PLUGIN_SLUG}/${version}"
