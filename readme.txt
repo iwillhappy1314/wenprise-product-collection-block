@@ -1,5 +1,5 @@
 === Wenprise Products By Tags ===
-Contributors:      The WordPress Contributors
+Contributors:      文普睿思信息科技
 Tags:              block
 Tested up to:      6.1
 Stable tag:        0.1.0
